@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricelist & Booking Setara Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0d12;
+            --card-bg: #12151c;
+            --gold: #d4af37;
+            --gold-hover: #bda030;
+            --text-main: #ffffff;
+            --text-muted: #8e929a;
+            --border-color: #222733;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header / Logo */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header .pricelist-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        header h1 span {
+            color: var(--gold);
+            font-weight: 400;
+            font-size: 24px;
+            font-family: 'Montserrat', sans-serif;
+            margin-left: 5px;
+        }
+
+        /* Container Card Utama */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 650px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Card Header */
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .card-icon {
+            background-color: #1c202b;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 20px;
+        }
+
+        .card-title h2 {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .card-title p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Tabel Data */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: left;
+            padding-bottom: 12px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .btn-book {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.2s;
+        }
+
+        .btn-book:hover {
+            background-color: var(--gold-hover);
+        }
+
+        /* Syarat & Ketentuan */
+        .tnc {
+            background-color: rgba(0, 0, 0, 0.15);
+            border-left: 2px solid var(--gold);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tnc h4 {
+            font-size: 11px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .tnc ul {
+            list-style: none;
+        }
+
+        .tnc ul li {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 12px;
+        }
+
+        .tnc ul li::before {
+            content: "•";
+            color: var(--gold);
+            position: absolute;
+            left: 0;
+        }
+
+        /* STYLING FORM BOOKING */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            background-color: #1a1e27;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--gold);
+        }
+
+        .form-group select option {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #25d366; /* Warna khas WhatsApp */
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s, transform 0.1s;
+            margin-top: 25px;
+        }
+
+        .btn-submit:hover {
+            background-color: #1ebd59;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 20px;
+            font-size: 10px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="btn-home">
+    <span>🏠</span> Kembali ke Home
+</a>
+
+<style>
+    .btn-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: transparent;
+        color: #d4af37; /* Warna Emas */
+        border: 1px solid #d4af37;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+        background-color: #d4af37;
+        color: #000000; /* Teks jadi hitam saat di-hover */
+        transform: translateY(-2px);
+    }
+</style>
+
+    <header>
+        <span class="pricelist-tag">Pricelist & Booking</span>
+        <h1>SETARA <span>STUDIO</span></h1>
+    </header>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">📷</div>
+            <div class="card-title">
+                <h2>Photoshoot & Family Studio</h2>
+                <p>Sewa Studio untuk Semua Kategori Foto & Acara</p>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Kategori & Paket</th>
+                    <th>Durasi & Kapasitas</th>
+                    <th class="text-right">Harga Studio</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1 - 5 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 200.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Photoshoot - 1-4 Orang (Rp 200k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>1 - 7 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 250.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Photoshoot - 5-9 Orang (Rp 250k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>1 - 10 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 300.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Photoshoot - 10-14 Orang (Rp 300k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>1 - 12 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 350.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Photoshoot - 10-14 Orang (Rp 300k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>1 - 15 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 400.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Photoshoot - 10-14 Orang (Rp 300k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>1 - 20 Orang</td>
+                    <td>30 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 5 00.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Photoshoot - 10-14 Orang (Rp 300k)')">Book</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <P class="hero-subtitle">*Paket 1-7 Orang mendapatkan 3 Cetakan 4R</P>
+        <P class="hero-subtitle">*Paket 1-12 Orang mendapatkan 1 Cetakan 12R+Bingkai</P>
+        <P class="hero-subtitle">*Paket 1-20 Orang mendapatkan 1 Cetakan 17R+Bingkai & 3 Cetakan 4R</P>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">🎓</div>
+            <div class="card-title">
+                <h2>Graduation Foto Studio</h2>
+                <p>Momen Spesial Kelulusan Bersama Orang Terkasih</p>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Paket</th>
+                    <th>Kapasitas</th>
+                    <th>Durasi Foto</th>
+                    <th class="text-right">Harga Sesi</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge">Small</span></td>
+                    <td>1 - 5 Orang</td>
+                    <td>20 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 250.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Graduation - Silver (Rp 250k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td><span class="badge">Basic</span></td>
+                    <td>1 - 8 Orang</td>
+                    <td>20 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 300.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Graduation - Gold (Rp 300k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td><span class="badge">Medium</span></td>
+                    <td>1 - 10 Orang</td>
+                    <td>20 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 350.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Graduation - Gold (Rp 300k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td><span class="badge">Premium</span></td>
+                    <td>1 - 13 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 400.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Graduation - Gold (Rp 300k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td><span class="badge">Gold</span></td>
+                    <td>1 - 15 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 450.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Graduation - Gold (Rp 300k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td><span class="badge">Platinum</span></td>
+                    <td>1 - 20 Orang</td>
+                    <td>25 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 600.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Graduation - Gold (Rp 300k)')">Book</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <P class="hero-subtitle">*Paket Small mendapatkan 1 Cetakan 10R+Bingkai</P>
+        <P class="hero-subtitle">*Paket Basic mendapatkan 1 Cetakan 11R+Bingkai</P>
+        <P class="hero-subtitle">*Paket Medium mendapatkan 2 Cetakan 12R+Bingkai</P>
+        <P class="hero-subtitle">*Paket Premium mendapatkan 1 Cetakan 16R+Bingkai</P>
+        <P class="hero-subtitle">*Paket Gold mendapatkan 1 Cetakan 17R+Bingkai</P>
+        <P class="hero-subtitle">*Paket Platinum mendapatkan 1 Cetakan 20R+Bingkai</P>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">⏱️</div>
+            <div class="card-title">
+                <h2>Self Foto Studio</h2>
+                <p>Ekspresikan dirimu tanpa canggung, pakai remote!</p>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Jumlah Peserta</th>
+                    <th>Durasi Sesi</th>
+                    <th class="text-right">Total Biaya</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 60.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>2 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 80.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 2 Person (Rp 80k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>3 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 100.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>4 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 120.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>5 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 140.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>6 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 160.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>7 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 180.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>8 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 200.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+                <tr>
+                    <td>9 Person</td>
+                    <td>15 Menit</td>
+                    <td class="text-right" style="color: var(--gold);">Rp 220.000</td>
+                    <td class="text-right"><button class="btn-book" onclick="pilihPaket('Self Foto - 1 Person (Rp 50k)')">Book</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <P class="hero-subtitle">*All File Edit</P>
+        <P class="hero-subtitle">*Extratime per 10menit 15k</P>
+        <P class="hero-subtitle">*Persesi Hanya 1 Background</P>
+        <P class="hero-subtitle">*Setiap Paket mendapatkan 1 cetakan tiap orang</P>
+    </div>
+
+    <div id="booking-form-section" class="card" style="border: 1.5px solid var(--gold);">
+        <div class="card-header">
+            <div class="card-icon">📝</div>
+            <div class="card-title">
+                <h2>Formulir Booking</h2>
+                <p>Isi data di bawah ini untuk dikirim langsung ke WhatsApp Studio</p>
+            </div>
+        </div>
+
+        <form id="whatsappForm" onsubmit="kirimKeWhatsApp(event)">
+            <div class="form-group">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" placeholder="Masukkan nama Anda..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="paket">Paket Foto</label>
+                <select id="paket" required>
+                    <option value="" disabled selected>-- Pilih Paket Foto --</option>
+                    <optgroup label="Photoshoot & Family">
+                        <option value="Photoshoot - 1-5 Orang (Rp 200k)">Photoshoot - 1-5 Orang (Rp 200.000)</option>
+                        <option value="Photoshoot - 1-7 Orang (Rp 250k)">Photoshoot - 1-7 Orang (Rp 250.000)</option>
+                        <option value="Photoshoot - 1-10 Orang (Rp 300k)">Photoshoot - 1-10 Orang (Rp 300.000)</option>
+                        <option value="Photoshoot - 1-12 Orang (Rp 350k)">Photoshoot - 1-12 Orang (Rp 350.000)</option>
+                        <option value="Photoshoot - 1-15 Orang (Rp 400k)">Photoshoot - 1-15 Orang (Rp 400.000)</option>
+                        <option value="Photoshoot - 1-20 Orang (Rp 500k)">Photoshoot - 1-20 Orang (Rp 500.000)</option>
+                    </optgroup>
+                    <optgroup label="Graduation Studio">
+                        <option value="Graduation - Small (Rp 250k)">Graduation - Small (Rp 250.000)</option>
+                        <option value="Graduation - Basic (Rp 300k)">Graduation - Basic (Rp 300.000)</option>
+                        <option value="Graduation - Medium (Rp 350k)">Graduation - Medium (Rp 350.000)</option>
+                        <option value="Graduation - Premium (Rp 400k)">Graduation - Premium (Rp 400.000)</option>
+                        <option value="Graduation - Gold (Rp 450k)">Graduation - Gold (Rp 450.000)</option>
+                        <option value="Graduation - Platinum (Rp 600k)">Graduation - Platinum (Rp 600.000)</option>
+                    </optgroup>
+                    <optgroup label="Self Foto Studio">
+                        <option value="Self Foto - 1 Person (Rp 60k)">Self Foto - 1 Person (Rp 60.000)</option>
+                        <option value="Self Foto - 2 Person (Rp 80k)">Self Foto - 2 Person (Rp 80.000)</option>
+                        <option value="Self Foto - 3 Person (Rp 100k)">Self Foto - 3 Person (Rp 100.000)</option>
+                        <option value="Self Foto - 4 Person (Rp 120k)">Self Foto - 4 Person (Rp 120.000)</option>
+                        <option value="Self Foto - 5 Person (Rp 140k)">Self Foto - 5 Person (Rp 140.000)</option>
+                        <option value="Self Foto - 6 Person (Rp 160k)">Self Foto - 6 Person (Rp 160.000)</option>
+                        <option value="Self Foto - 7 Person (Rp 180k)">Self Foto - 7 Person (Rp 180.000)</option>
+                        <option value="Self Foto - 8 Person (Rp 200k)">Self Foto - 8 Person (Rp 200.000)</option>
+                        <option value="Self Foto - 9 Person (Rp 220k)">Self Foto - 9 Person (Rp 220.000)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="jumlah_orang">Jumlah Orang (Kapasitas)</label>
+                <input type="number" id="jumlah_orang" min="1" placeholder="Contoh: 3" required>
+            </div>
+
+            <div class="form-group">
+                <label for="jam_booking">Tanggal & Jam Booking</label>
+                <input type="datetime-local" id="jam_booking" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <span>💬</span> Kirim Booking via WhatsApp
+            </button>
+        </form>
+    </div>
+
+    <footer>
+        © 2026 Setara Studio. All Rights Reserved.
+    </footer>
+
+    <script>
+        // Fungsi otomatis mengisi dropdown Paket saat tombol "Book" di tabel diklik
+        function pilihPaket(namaPaket) {
+            const selectPaket = document.getElementById('paket');
+            selectPaket.value = namaPaket;
+            
+            // Otomatis mengarahkan layar (scroll) ke area form
+            document.getElementById('booking-form-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Fungsi Memproses Form dan Mengirim data ke WhatsApp
+        function kirimKeWhatsApp(event) {
+            event.preventDefault(); // Mencegah reload halaman saat form disubmit
+
+            // Mengambil value dari Form
+            const nomorWA = "6285122110230"; // Format nomor WA dengan kode negara (62) pengganti angka 0
+            const nama = document.getElementById('nama').value;
+            const paket = document.getElementById('paket').value;
+            const jumlahOrang = document.getElementById('jumlah_orang').value;
+            const jamBookingRaw = document.getElementById('jam_booking').value;
+
+            // Memformat Tampilan Tanggal dan Jam agar lebih rapi dibaca di WA
+            const opsiWaktu = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const jamBooking = new Date(jamBookingRaw).toLocaleDateString('id-ID', opsiWaktu);
+
+            // Membuat Format Pesan Teks
+            const teksPesan = 
+                `*HALO SETARA STUDIO, SAYA MAU BOOKING* \n\n` +
+                `• *Nama Pemesan :* ${nama}\n` +
+                `• *Paket Foto :* ${paket}\n` +
+                `• *Jumlah Orang :* ${jumlahOrang} Orang\n` +
+                `• *Waktu Sesi :* ${jamBooking} WIB\n\n` +
+                `Mohon dikonfirmasi ketersediaan jadwalnya ya, Terima kasih!`;
+
+            // Proses encode URL agar teks dapat dibaca sistem tautan WhatsApp
+            const urlWhatsApp = `https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodeURIComponent(teksPesan)}`;
+
+            // Membuka Tautan WhatsApp di Tab Baru
+            window.open(urlWhatsApp, '_blank');
+        }
+    </script>
+
+</body>
+</html>

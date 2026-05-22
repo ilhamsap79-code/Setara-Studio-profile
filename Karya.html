@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karya Setara Studio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+
+        /* Variabel warna default (Mode Malam) */
+        :root {
+            --bg-body: #0b0c0d;
+            --bg-card: #111315;
+            --border-color: #1f2937;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --text-muted: #4b5563;
+            --bg-upload-hover: #15181b;
+            --lightbox-bg: rgba(4, 4, 5, 0.98);
+        }
+
+        /* Variabel warna saat mode siang aktif */
+        body.light-mode {
+            --bg-body: #f4f3ef; 
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --bg-upload-hover: #fcfbfa;
+            --lightbox-bg: rgba(252, 251, 249, 0.98);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-secondary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding: 80px 20px 60px 20px; /* Ditambah padding atas agar tombol navigasi rapi */
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* ====================================================
+           STYLE TOMBOL KEMBALI BERBINGKAI (FRAME BUTTON) 
+        ======================================================= */
+        .back-to-index-btn {
+            position: absolute;
+            top: -30px;
+            left: 10px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 18px;
+            border-radius: 4px; /* Sudut tegas khas perangkat bodi kamera */
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* Efek Bingkai Menyala Merah Saat Kursor Menyentuh Tombol */
+        .back-to-index-btn:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+        }
+
+        /* ====================================================
+           STYLE TOMBOL SWITCHER SIANG/MALAM
+        ======================================================= */
+        .theme-toggle-btn {
+            position: absolute;
+            top: -30px;
+            right: 10px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 16px;
+            border-radius: 30px; /* Membulat sebagai kontras dari tombol kembali */
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: #ef4444;
+        }
+
+        /* Header Layout */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            margin-top: 20px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header h1::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #ef4444;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        header p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Area Upload */
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed var(--border-color);
+            padding: 45px;
+            border-radius: 12px;
+            background-color: var(--bg-card);
+            margin-bottom: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-section:hover {
+            border-color: #ef4444;
+            background-color: var(--bg-upload-hover);
+        }
+
+        .upload-section::before, .upload-section::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-color: var(--text-muted);
+            border-style: solid;
+        }
+        .upload-section:hover::before, .upload-section:hover::after {
+            border-color: #ef4444;
+        }
+        .upload-section::before { top: 15px; left: 15px; border-width: 2px 0 0 2px; }
+        .upload-section::after { bottom: 15px; right: 15px; border-width: 0 2px 2px 0; }
+
+        .upload-icon-box {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .upload-section:hover .upload-icon-box {
+            color: #ef4444;
+        }
+
+        .file-input-label {
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .upload-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Grid Galeri */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Kartu Media */
+        .media-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--text-muted);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .media-preview-container {
+            width: 100%;
+            height: 240px;
+            background: #000000;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-preview-container img, 
+        .media-preview-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .media-preview-container::after {
+            content: '[ CAPTURED FRAME ]';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .media-preview-container:hover::after {
+            opacity: 1;
+        }
+
+        .media-info {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .meta-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 65%;
+        }
+
+        .media-name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .media-type {
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .delete-btn:hover {
+            color: #ffffff;
+            background-color: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--text-muted);
+            padding: 80px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        /* LIGHTBOX MODAL */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--lightbox-bg);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .lightbox-content {
+            max-width: 92%;
+            max-height: 88%;
+            object-fit: contain;
+            border: 1px solid var(--border-color);
+            animation: shutterOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body.light-mode .lightbox-content {
+            border: 8px solid white;
+        }
+
+        @keyframes shutterOpen {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: var(--text-secondary);
+            font-size: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+        }
+
+        .close-lightbox:hover {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- TOMBOL KEMBALI BERBINGKAI MEKANIS -->
+    <a href="index.html" class="back-to-index-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        [Kembali]
+    </a>
+
+    <!-- TOMBOL SWITCHER SIANG/MALAM -->
+    <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">
+        🌙 MODE: MALAM
+    </button>
+
+    <header>
+        <h1>Live Viewfinder</h1>
+        <p>Storage Matrix // Object Saved Automatically</p>
+    </header>
+
+    <!-- Upload Area -->
+    <div class="upload-section" onclick="document.getElementById('file-input').click()">
+        <div class="upload-icon-box">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
+        </div>
+        <span class="file-input-label">Mount New Lens / Media</span>
+        <span class="upload-hint">Accepting RAW Image & Cinema Stream (.mp4, .png, .jpg)</span>
+        <input type="file" id="file-input" accept="image/*,video/*" multiple>
+    </div>
+
+    <!-- Grid Pameran Karya -->
+    <div class="gallery-grid" id="gallery-grid">
+        <div class="empty-message" id="empty-message">NO SHUTTER CAPTURES RECORDED IN REEL</div>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+    <div id="lightbox-media-box" onclick="event.stopPropagation()"></div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('file-input');
+    const galleryGrid = document.getElementById('gallery-grid');
+    const emptyMessage = document.getElementById('empty-message');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxMediaBox = document.getElementById('lightbox-media-box');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    // FUNGSI SWITCHER SIANG / MALAM
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        
+        if(document.body.classList.contains('light-mode')) {
+            themeToggleBtn.innerHTML = "☀️ MODE: SIANG";
+            localStorage.setItem('theme', 'light');
+        } else {
+            themeToggleBtn.innerHTML = "🌙 MODE: MALAM";
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        themeToggleBtn.innerHTML = "☀️ MODE: SIANG";
+    }
+
+    // SYSTEM DATABASE LOCAL (INDEXEDDB)
+    let db;
+    const request = indexedDB.open("CameraDarkroomDB", 1);
+
+    request.onupgradeneeded = function(e) {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains("media")) {
+            db.createObjectStore("media", { keyPath: "id", autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = function(e) {
+        db = e.target.result;
+        loadMediaFromDB();
+    };
+
+    function loadMediaFromDB() {
+        const transaction = db.transaction(["media"], "readonly");
+        const store = transaction.objectStore("media");
+        const cursorRequest = store.openCursor();
+
+        let hasData = false;
+
+        cursorRequest.onsuccess = function(e) {
+            const cursor = e.target.result;
+            if (cursor) {
+                hasData = true;
+                emptyMessage.style.display = 'none';
+                const fileURL = URL.createObjectURL(cursor.value.fileData);
+                createMediaCard(cursor.value.id, fileURL, cursor.value.type, cursor.value.name);
+                cursor.continue();
+            }
+            if (!hasData) emptyMessage.style.display = 'block';
+        };
+    }
+
+    fileInput.addEventListener('change', function(e) {
+        const files = e.target.files;
+        if (files.length === 0) return;
+
+        const transaction = db.transaction(["media"], "readwrite");
+        const store = transaction.objectStore("media");
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const isImage = file.type.startsWith('image/');
+            const isVideo = file.type.startsWith('video/');
+
+            if (!isImage && !isVideo) continue;
+
+            const mediaType = isImage ? 'image' : 'video';
+            const mediaObject = { fileData: file, type: mediaType, name: file.name };
+
+            const addRequest = store.add(mediaObject);
+
+            addRequest.onsuccess = function(e) {
+                const insertedId = e.target.result;
+                const fileURL = URL.createObjectURL(file);
+                emptyMessage.style.display = 'none';
+                createMediaCard(insertedId, fileURL, mediaType, file.name);
+            };
+        }
+        fileInput.value = ''; 
+    });
+
+    function createMediaCard(id, fileURL, type, fileName) {
+        const card = document.createElement('div');
+        card.className = 'media-card';
+
+        const previewContainer = document.createElement('div');
+        previewContainer.className = 'media-preview-container';
+
+        let mediaElement;
+        if (type === 'image') {
+            mediaElement = document.createElement('img');
+            mediaElement.src = fileURL;
+            previewContainer.onclick = () => openLightbox('image', fileURL);
+        } else if (type === 'video') {
+            mediaElement = document.createElement('video');
+            mediaElement.src = fileURL;
+            mediaElement.muted = true; 
+            previewContainer.onclick = () => openLightbox('video', fileURL);
+        }
+
+        previewContainer.appendChild(mediaElement);
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'media-info';
+        
+        infoDiv.innerHTML = `
+            <div class="meta-details">
+                <span class="media-type">${type === 'image' ? '● RAW.IMG' : '● MOV.CINE'}</span>
+                <span class="media-name" title="${fileName}">${fileName}</span>
+            </div>
+        `;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = 'Delete';
+        
+        deleteBtn.onclick = function() {
+            const transaction = db.transaction(["media"], "readwrite");
+            const store = transaction.objectStore("media");
+            store.delete(id);
+
+            transaction.oncomplete = function() {
+                card.remove();
+                URL.revokeObjectURL(fileURL);
+                if (galleryGrid.querySelectorAll('.media-card').length === 0) {
+                    emptyMessage.style.display = 'block';
+                }
+            };
+        };
+
+        infoDiv.appendChild(deleteBtn);
+        card.appendChild(previewContainer);
+        card.appendChild(infoDiv);
+        galleryGrid.appendChild(card);
+    }
+
+    function openLightbox(type, src) {
+        lightboxMediaBox.innerHTML = ''; 
+        if (type === 'image') {
+            const img = document.createElement('img');
+            img.src = src;
+            img.className = 'lightbox-content';
+            lightboxMediaBox.appendChild(img);
+        } else if (type === 'video') {
+            const video = document.createElement('video');
+            video.src = src;
+            video.className = 'lightbox-content';
+            video.controls = true; 
+            video.autoplay = true; 
+            lightboxMediaBox.appendChild(video);
+        }
+        lightbox.style.display = 'flex';
+    }
+
+    function closeLightbox() {
+        lightbox.style.display = 'none';
+        lightboxMediaBox.innerHTML = '';
+    }
+</script>
+
+</body>
+</html>
