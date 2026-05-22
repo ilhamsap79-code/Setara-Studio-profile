@@ -3,595 +3,533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karya Setara Studio</title>
+    <title>GaleriSetara Studio | Premium Photography Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
-
-        /* Variabel warna default (Mode Malam) */
         :root {
-            --bg-body: #0b0c0d;
-            --bg-card: #111315;
-            --border-color: #1f2937;
-            --text-primary: #ffffff;
-            --text-secondary: #9ca3af;
-            --text-muted: #4b5563;
-            --bg-upload-hover: #15181b;
-            --lightbox-bg: rgba(4, 4, 5, 0.98);
-        }
-
-        /* Variabel warna saat mode siang aktif */
-        body.light-mode {
-            --bg-body: #f4f3ef; 
-            --bg-card: #ffffff;
-            --border-color: #e2e8f0;
-            --text-primary: #1a1a1a;
-            --text-secondary: #64748b;
-            --text-muted: #94a3b8;
-            --bg-upload-hover: #fcfbfa;
-            --lightbox-bg: rgba(252, 251, 249, 0.98);
+            --bg-dark: #0f0f0f;
+            --bg-sidebar: #141414;
+            --accent-bronze: #c5a880;
+            --text-muted: #8e8e8e;
+            --text-light: #ffffff;
+            --font-serif: 'Cinzel', Georgia, serif;
+            --font-sans: 'Inter', sans-serif;
+            --lightbox-overlay: rgba(11, 11, 11, 0.98);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--bg-body);
-            color: var(--text-secondary);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 80px 20px 60px 20px; /* Ditambah padding atas agar tombol navigasi rapi */
-        }
-
-        .container {
-            max-width: 1140px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        /* ====================================================
-           STYLE TOMBOL KEMBALI BERBINGKAI (FRAME BUTTON) 
-        ======================================================= */
-        .back-to-index-btn {
-            position: absolute;
-            top: -30px;
-            left: 10px;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 10px 18px;
-            border-radius: 4px; /* Sudut tegas khas perangkat bodi kamera */
-            text-decoration: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 1px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-sans);
             display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            min-height: 100vh;
+            letter-spacing: 0.5px;
+            overflow-x: hidden;
         }
 
-        /* Efek Bingkai Menyala Merah Saat Kursor Menyentuh Tombol */
-        .back-to-index-btn:hover {
-            border-color: #ef4444;
-            color: #ef4444;
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
-        }
-
-        /* ====================================================
-           STYLE TOMBOL SWITCHER SIANG/MALAM
-        ======================================================= */
-        .theme-toggle-btn {
-            position: absolute;
-            top: -30px;
-            right: 10px;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 10px 16px;
-            border-radius: 30px; /* Membulat sebagai kontras dari tombol kembali */
-            cursor: pointer;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .theme-toggle-btn:hover {
-            border-color: #ef4444;
-        }
-
-        /* Header Layout */
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-            margin-top: 20px;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        header h1::before {
-            content: '';
-            width: 12px;
-            height: 12px;
-            background-color: #ef4444;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 10px #ef4444;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        header p {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* Area Upload */
-        .upload-section {
+        /* --- SIDEBAR ELEGAN --- */
+        aside {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            padding: 50px 35px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed var(--border-color);
-            padding: 45px;
-            border-radius: 12px;
-            background-color: var(--bg-card);
-            margin-bottom: 50px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .upload-section:hover {
-            border-color: #ef4444;
-            background-color: var(--bg-upload-hover);
-        }
-
-        .upload-section::before, .upload-section::after {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            border-color: var(--text-muted);
-            border-style: solid;
-        }
-        .upload-section:hover::before, .upload-section:hover::after {
-            border-color: #ef4444;
-        }
-        .upload-section::before { top: 15px; left: 15px; border-width: 2px 0 0 2px; }
-        .upload-section::after { bottom: 15px; right: 15px; border-width: 0 2px 2px 0; }
-
-        .upload-icon-box {
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-
-        .upload-section:hover .upload-icon-box {
-            color: #ef4444;
-        }
-
-        .file-input-label {
-            color: var(--text-primary);
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .upload-hint {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 8px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        #file-input {
-            display: none;
-        }
-
-        /* Grid Galeri */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        /* Kartu Media */
-        .media-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .media-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--text-muted);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .media-preview-container {
-            width: 100%;
-            height: 240px;
-            background: #000000;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .media-preview-container img, 
-        .media-preview-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .media-preview-container::after {
-            content: '[ CAPTURED FRAME ]';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            color: #ef4444;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .media-preview-container:hover::after {
-            opacity: 1;
-        }
-
-        .media-info {
-            padding: 16px;
-            display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .meta-details {
+        .brand h1 {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+
+        .brand h1 span {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--accent-bronze);
+            letter-spacing: 5px;
+            margin-top: 4px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-bottom: auto;
+            margin-top: 50px;
+        }
+
+        .nav-menu li {
+            margin-bottom: 22px;
+        }
+
+        .nav-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            display: inline-block;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-bronze);
+            transition: width 0.4s ease;
+        }
+
+        .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--text-light); }
+
+        /* KOTAK INFO PANEL LOCAL */
+        .local-info {
+            background: rgba(197, 168, 128, 0.03);
+            border: 1px dashed rgba(197, 168, 128, 0.2);
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 40px;
+        }
+
+        .local-info i {
+            color: var(--accent-bronze);
+            margin-right: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 18px;
+        }
+
+        .social-icons a {
+            color: #444;
+            font-size: 0.85rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons a:hover { color: var(--accent-bronze); transform: translateY(-2px); }
+
+        /* --- KONTEN UTAMA --- */
+        main {
+            margin-left: 260px;
+            flex-grow: 1;
+            width: calc(100% - 260px);
+            padding: 40px 50px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            max-width: 65%;
         }
 
-        .media-name {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        /* Menu filter atas */
+        .filter-menu {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            padding-bottom: 35px;
+            list-style: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
         }
 
-        .media-type {
-            font-size: 0.7rem;
-            font-family: 'JetBrains Mono', monospace;
-            color: #ef4444;
-            font-weight: bold;
-        }
-
-        .delete-btn {
-            background-color: transparent;
+        .filter-menu a {
             color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 6px 12px;
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .filter-menu a:hover, .filter-menu a.active {
+            color: var(--accent-bronze);
+        }
+
+        /* --- TATA LETAK MASONRY --- */
+        .gallery-grid {
+            column-count: 4;
+            column-gap: 20px;
+            flex-grow: 1;
+        }
+
+        .gallery-item {
+            position: relative;
+            background-color: #161616;
+            overflow: hidden;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.7rem;
-            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 20px;
+            break-inside: avoid;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            animation: fadeIn 0.6s ease forwards;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease;
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .delete-btn:hover {
-            color: #ffffff;
-            background-color: #ef4444;
-            border-color: #ef4444;
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: grayscale(15%) brightness(90%);
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.8s ease;
         }
 
-        .empty-message {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: var(--text-muted);
-            padding: 80px 0;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+        .item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(11, 11, 11, 0.8) 0%, rgba(11, 11, 11, 0.1) 70%, rgba(11, 11, 11, 0) 100%);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            transition: opacity 0.4s ease;
+            z-index: 2;
         }
 
-        /* LIGHTBOX MODAL */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--lightbox-bg);
-            z-index: 9999;
+        .item-overlay i {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            opacity: 0.7;
+            transform: translateY(-5px);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .item-overlay span {
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            transform: translateY(10px);
+            transition: transform 0.4s ease;
+            margin-top: 5px;
+        }
+
+        /* Hover Actions */
+        .gallery-item:hover { transform: translateY(-5px); border-color: rgba(197, 168, 128, 0.4); }
+        .gallery-item:hover img { transform: scale(1.03); filter: grayscale(0%) brightness(100%); }
+        .gallery-item:hover .item-overlay { opacity: 1; }
+        .gallery-item:hover .item-overlay i, .gallery-item:hover .item-overlay span { transform: translateY(0); opacity: 1;}
+
+        /* Placeholder kosong */
+        .empty-placeholder {
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(8px);
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 80px 20px;
+            width: 100%;
+            border-radius: 4px;
+            gap: 15px;
         }
+
+        /* --- LIGHTBOX (ZOOM MODAL) --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--lightbox-overlay);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .lightbox.active { opacity: 1; pointer-events: auto; }
 
         .lightbox-content {
-            max-width: 92%;
-            max-height: 88%;
-            object-fit: contain;
-            border: 1px solid var(--border-color);
-            animation: shutterOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 90%; max-height: 90%;
+            display: flex; justify-content: center; align-items: center;
+            border: 2px solid rgba(255,255,255,0.05); border-radius: 4px;
+            overflow: hidden; background-color: #050505;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            animation: zoomIn 0.5s ease forwards;
         }
 
-        body.light-mode .lightbox-content {
-            border: 8px solid white;
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0;}
+            to { transform: scale(1); opacity: 1;}
         }
 
-        @keyframes shutterOpen {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        .lightbox-content img { width: auto; max-width: 100%; height: auto; max-height: 90vh; object-fit: contain; display: block; }
+        .close-lightbox { position: absolute; top: 30px; right: 30px; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; background: none; border: none; transition: all 0.3s ease; }
+        .close-lightbox:hover { color: var(--accent-bronze); transform: scale(1.1) rotate(90deg); }
 
-        .close-lightbox {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            color: var(--text-secondary);
-            font-size: 30px;
-            font-family: 'JetBrains Mono', monospace;
-            cursor: pointer;
+        /* --- RESPONSIVE BREAKPOINTS --- */
+        @media (max-width: 1200px) { .gallery-grid { column-count: 3; } }
+        @media (max-width: 1024px) { .filter-menu { justify-content: flex-start; overflow-x: auto; white-space: nowrap; padding-bottom: 20px; } }
+        @media (max-width: 900px) { .gallery-grid { column-count: 2; } }
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            aside { position: relative; width: 100%; height: auto; padding: 30px 25px; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+            .nav-menu { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 25px; margin-bottom: 25px; }
+            .nav-menu li { margin-bottom: 0; }
+            .local-info { margin-bottom: 20px; }
+            main { margin-left: 0; width: 100%; padding: 25px; }
+            .filter-menu { margin-bottom: 25px; }
+            .gallery-grid { column-count: 2; column-gap: 15px; }
         }
-
-        .close-lightbox:hover {
-            color: #ef4444;
-        }
+        @media (max-width: 480px) { .gallery-grid { column-count: 1; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    
-    <!-- TOMBOL KEMBALI BERBINGKAI MEKANIS -->
-    <a href="index.html" class="back-to-index-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        [Kembali]
-    </a>
-
-    <!-- TOMBOL SWITCHER SIANG/MALAM -->
-    <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">
-        🌙 MODE: MALAM
-    </button>
-
-    <header>
-        <h1>Live Viewfinder</h1>
-        <p>Storage Matrix // Object Saved Automatically</p>
-    </header>
-
-    <!-- Upload Area -->
-    <div class="upload-section" onclick="document.getElementById('file-input').click()">
-        <div class="upload-icon-box">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
+    <aside>
+        <div class="brand">
+            <h1>GaleriSetara<br><span>Studio</span></h1>
         </div>
-        <span class="file-input-label">Mount New Lens / Media</span>
-        <span class="upload-hint">Accepting RAW Image & Cinema Stream (.mp4, .png, .jpg)</span>
-        <input type="file" id="file-input" accept="image/*,video/*" multiple>
-    </div>
 
-    <!-- Grid Pameran Karya -->
-    <div class="gallery-grid" id="gallery-grid">
-        <div class="empty-message" id="empty-message">NO SHUTTER CAPTURES RECORDED IN REEL</div>
-    </div>
-</div>
+        <ul class="nav-menu">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">Pages</a></li>
+        </ul>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-    <div id="lightbox-media-box" onclick="event.stopPropagation()"></div>
-</div>
+        <div class="local-info">
+            <p><i class="fa-regular fa-folder-open"></i> <strong>Mode Manual Lokal</strong></p>
+            <p style="margin-top: 5px; font-size: 0.62rem; color: #777;">Simpan foto ke folder <code>image karya</code>, lalu daftarkan nama file fotonya di bagian bawah script kode HTML ini.</p>
+        </div>
 
-<script>
-    const fileInput = document.getElementById('file-input');
-    const galleryGrid = document.getElementById('gallery-grid');
-    const emptyMessage = document.getElementById('empty-message');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxMediaBox = document.getElementById('lightbox-media-box');
-    const themeToggleBtn = document.getElementById('theme-toggle');
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-behance"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-pinterest-p"></i></a>
+        </div>
+    </aside>
 
-    // FUNGSI SWITCHER SIANG / MALAM
-    function toggleTheme() {
-        document.body.classList.toggle('light-mode');
-        
-        if(document.body.classList.contains('light-mode')) {
-            themeToggleBtn.innerHTML = "☀️ MODE: SIANG";
-            localStorage.setItem('theme', 'light');
-        } else {
-            themeToggleBtn.innerHTML = "🌙 MODE: MALAM";
-            localStorage.setItem('theme', 'dark');
-        }
-    }
+    <main>
+        <ul class="filter-menu" id="filterMenu">
+            <li><a href="#" class="active" data-filter="all">Explore All</a></li>
+            <li><a href="#" data-filter="self-foto">Self Foto</a></li>
+            <li><a href="#" data-filter="fotoshoot">FotoShoot</a></li>
+            <li><a href="#" data-filter="foto-keluarga">Foto Keluarga</a></li>
+            <li><a href="#" data-filter="maternity">Maternity</a></li>
+            <li><a href="#" data-filter="graduation">Graduation</a></li>
+            <li><a href="#" data-filter="foto-grup">Foto Grup</a></li>
+            <li><a href="#" data-filter="pas-foto">Pas Foto</a></li>
+            <li><a href="#" data-filter="ulang-tahun">Foto Ulang Tahun</a></li>
+        </ul>
 
-    if (localStorage.getItem('theme') === 'light') {
-        document.body.classList.add('light-mode');
-        themeToggleBtn.innerHTML = "☀️ MODE: SIANG";
-    }
-
-    // SYSTEM DATABASE LOCAL (INDEXEDDB)
-    let db;
-    const request = indexedDB.open("CameraDarkroomDB", 1);
-
-    request.onupgradeneeded = function(e) {
-        db = e.target.result;
-        if (!db.objectStoreNames.contains("media")) {
-            db.createObjectStore("media", { keyPath: "id", autoIncrement: true });
-        }
-    };
-
-    request.onsuccess = function(e) {
-        db = e.target.result;
-        loadMediaFromDB();
-    };
-
-    function loadMediaFromDB() {
-        const transaction = db.transaction(["media"], "readonly");
-        const store = transaction.objectStore("media");
-        const cursorRequest = store.openCursor();
-
-        let hasData = false;
-
-        cursorRequest.onsuccess = function(e) {
-            const cursor = e.target.result;
-            if (cursor) {
-                hasData = true;
-                emptyMessage.style.display = 'none';
-                const fileURL = URL.createObjectURL(cursor.value.fileData);
-                createMediaCard(cursor.value.id, fileURL, cursor.value.type, cursor.value.name);
-                cursor.continue();
-            }
-            if (!hasData) emptyMessage.style.display = 'block';
-        };
-    }
-
-    fileInput.addEventListener('change', function(e) {
-        const files = e.target.files;
-        if (files.length === 0) return;
-
-        const transaction = db.transaction(["media"], "readwrite");
-        const store = transaction.objectStore("media");
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const isImage = file.type.startsWith('image/');
-            const isVideo = file.type.startsWith('video/');
-
-            if (!isImage && !isVideo) continue;
-
-            const mediaType = isImage ? 'image' : 'video';
-            const mediaObject = { fileData: file, type: mediaType, name: file.name };
-
-            const addRequest = store.add(mediaObject);
-
-            addRequest.onsuccess = function(e) {
-                const insertedId = e.target.result;
-                const fileURL = URL.createObjectURL(file);
-                emptyMessage.style.display = 'none';
-                createMediaCard(insertedId, fileURL, mediaType, file.name);
-            };
-        }
-        fileInput.value = ''; 
-    });
-
-    function createMediaCard(id, fileURL, type, fileName) {
-        const card = document.createElement('div');
-        card.className = 'media-card';
-
-        const previewContainer = document.createElement('div');
-        previewContainer.className = 'media-preview-container';
-
-        let mediaElement;
-        if (type === 'image') {
-            mediaElement = document.createElement('img');
-            mediaElement.src = fileURL;
-            previewContainer.onclick = () => openLightbox('image', fileURL);
-        } else if (type === 'video') {
-            mediaElement = document.createElement('video');
-            mediaElement.src = fileURL;
-            mediaElement.muted = true; 
-            previewContainer.onclick = () => openLightbox('video', fileURL);
-        }
-
-        previewContainer.appendChild(mediaElement);
-
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'media-info';
-        
-        infoDiv.innerHTML = `
-            <div class="meta-details">
-                <span class="media-type">${type === 'image' ? '● RAW.IMG' : '● MOV.CINE'}</span>
-                <span class="media-name" title="${fileName}">${fileName}</span>
+        <div class="gallery-grid" id="galleryGrid">
+            <div class="empty-placeholder" id="emptyPlaceholder">
+                <i class="fa-regular fa-image" style="font-size: 2rem; color: #2a2a2a;"></i>
+                <span>Belum ada karya terdaftar di dalam kode JavaScript.</span>
             </div>
-        `;
+        </div>
+    </main>
 
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.textContent = 'Delete';
-        
-        deleteBtn.onclick = function() {
-            const transaction = db.transaction(["media"], "readwrite");
-            const store = transaction.objectStore("media");
-            store.delete(id);
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="close-lightbox"><i class="fa-solid fa-xmark"></i></button>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="Zoom">
+        </div>
+    </div>
 
-            transaction.oncomplete = function() {
-                card.remove();
-                URL.revokeObjectURL(fileURL);
-                if (galleryGrid.querySelectorAll('.media-card').length === 0) {
-                    emptyMessage.style.display = 'block';
-                }
-            };
+    <script>
+        // =========================================================================
+        // ✍️ TEMPAT MENGATUR/MENDAFTARKAN NAMA FILE FOTO ANDA
+        // Tulis nama file foto (beserta ekstensinya seperti .jpg/.png) yang sudah 
+        // dimasukkan ke dalam folder lokal masing-masing di bawah ini:
+        // =========================================================================
+        const daftarFotoKarya = {
+            'self-foto': [
+                'felly.jpg', 
+                'foto_diri2.png'
+            ],
+            'fotoshoot': [
+                'model_studio1.jpg'
+            ],
+            'foto-keluarga': [
+                'keluarga_besar.jpg'
+            ],
+            'maternity': [
+                'maternity_session.jpg'
+            ],
+            'graduation': [
+                'wisuda_setara.jpg'
+            ],
+            'foto-grup': [
+                'fgw.jpg' 
+            ],
+            'pas-foto': [
+                'pasfoto_3x4.jpg'
+            ],
+            'ulang-tahun': [
+                'sweet_seventeen.jpg'
+            ]
         };
 
-        infoDiv.appendChild(deleteBtn);
-        card.appendChild(previewContainer);
-        card.appendChild(infoDiv);
-        galleryGrid.appendChild(card);
-    }
+        const galleryGrid = document.getElementById('galleryGrid');
+        const emptyPlaceholder = document.getElementById('emptyPlaceholder');
+        const filterMenu = document.getElementById('filterMenu');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        
+        let currentFilter = 'all';
 
-    function openLightbox(type, src) {
-        lightboxMediaBox.innerHTML = ''; 
-        if (type === 'image') {
-            const img = document.createElement('img');
-            img.src = src;
-            img.className = 'lightbox-content';
-            lightboxMediaBox.appendChild(img);
-        } else if (type === 'video') {
-            const video = document.createElement('video');
-            video.src = src;
-            video.className = 'lightbox-content';
-            video.controls = true; 
-            video.autoplay = true; 
-            lightboxMediaBox.appendChild(video);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGallery();
+            setupFilters();
+        });
+
+        // Membaca objek daftarFotoKarya dan membangun struktur HTML otomatis
+        function renderGallery() {
+            let totalFoto = 0;
+            galleryGrid.innerHTML = ''; // Bersihkan isi awal
+
+            for (const [kategori, listFile] of Object.entries(daftarFotoKarya)) {
+                listFile.forEach(namaFile => {
+                    // Struktur jalur lokal relatif mengarah ke sub-folder
+                    const pathLokal = `image karya/${kategori}/${namaFile}`;
+                    createGalleryItem(pathLokal, kategori);
+                    totalFoto++;
+                });
+            }
+
+            if (totalFoto === 0) {
+                galleryGrid.appendChild(emptyPlaceholder);
+            }
         }
-        lightbox.style.display = 'flex';
-    }
 
-    function closeLightbox() {
-        lightbox.style.display = 'none';
-        lightboxMediaBox.innerHTML = '';
-    }
-</script>
+        function createGalleryItem(src, category) {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.setAttribute('data-category', category);
 
+            item.innerHTML = `
+                <img src="${src}" alt="Karya GaleriSetara" onerror="handleMissingImage(this);">
+                <div class="item-overlay">
+                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    <span>Zoom Karya</span>
+                </div>
+            `;
+            
+            // Tambah trigger event klik untuk zoom gambar
+            item.addEventListener('click', () => openLightbox(src));
+            galleryGrid.appendChild(item);
+        }
+
+        // Penanganan error seandainya nama file di kode dan di folder komputer tidak sama
+        function handleMissingImage(imgElement) {
+            console.warn("File tidak ditemukan pada path: " + imgElement.src);
+            imgElement.parentElement.remove(); // Sembunyikan box item yang rusak
+            checkEmptyState();
+        }
+
+        // Logika kontrol menu filter atas
+        function setupFilters() {
+            const filterButtons = filterMenu.querySelectorAll('a');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    currentFilter = btn.getAttribute('data-filter');
+                    applyFilter();
+                });
+            });
+        }
+
+        function applyFilter() {
+            const items = galleryGrid.querySelectorAll('.gallery-item');
+            let countVisible = 0;
+
+            items.forEach(item => {
+                if (currentFilter === 'all' || item.getAttribute('data-category') === currentFilter) {
+                    item.style.display = 'block';
+                    countVisible++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            checkEmptyState(countVisible);
+        }
+
+        function checkEmptyState(countVisible = null) {
+            const items = galleryGrid.querySelectorAll('.gallery-item');
+            const totalActive = countVisible !== null ? countVisible : galleryGrid.querySelectorAll('.gallery-item[style="display: block;"]').length;
+            
+            const existingTemp = document.getElementById('tempPlaceholder');
+            if (existingTemp) existingTemp.remove();
+
+            if (items.length === 0 || totalActive === 0) {
+                const tempMsg = document.createElement('div');
+                tempMsg.className = 'empty-placeholder';
+                tempMsg.id = 'tempPlaceholder';
+                tempMsg.innerHTML = '<span>Tidak ada foto di kategori ini atau file gagal dimuat.</span>';
+                galleryGrid.appendChild(tempMsg);
+            }
+        }
+
+        // Kontrol Aktivasi Lightbox (Zoom gambar)
+        function openLightbox(src) {
+            lightboxImage.src = src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(e) {
+            if (e.target === lightbox || e.target.closest('.close-lightbox')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox({target: lightbox});
+        });
+    </script>
 </body>
 </html>
