@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap');
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #0b0c10;
@@ -148,11 +148,13 @@
             </div>
         </div>
 
-        <div class="bg-[#12141c] rounded-lg p-5 border border-gray-800 shadow-xl">
+        <div class="bg-[#12141c] rounded-lg p-5 border border-gray-800 shadow-xl" id="sectionJam">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
                 <div class="flex items-start gap-3">
-                    <div class="bg-[#1a1d28] p-2.5 rounded-md text-amber-500">
-                        <i class="fa-regular fa-clock text-lg"></i>
+                    <div class="bg-[#1a1d28] p-2.5 rounded-md text-amber-500 flex items-center justify-center">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                        </svg>
                     </div>
                     <div>
                         <h2 class="text-sm font-semibold text-white tracking-wide uppercase">Pilih Sesi Jam Kunjungan</h2>
@@ -161,7 +163,31 @@
                 </div>
             </div>
 
-            <div class="flex gap-4 text-[10px] mb-4 bg-[#171a24] p-2 rounded justify-center">
+            <div class="flex justify-between items-center bg-[#171a24] px-3 py-2 rounded text-[11px] mb-4 border border-gray-800/50">
+                <span class="text-gray-400 font-medium"><span class="text-amber-500 mr-1">⬤</span> Waktu Sekarang:</span>
+                <span class="text-white font-bold tracking-wider" id="clockDisplay">--:--:-- WIB</span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 mb-4 text-center">
+                <div class="bg-[#171a24] p-2 rounded border border-gray-800/50">
+                    <div class="text-emerald-400 font-bold text-sm" id="cAvail">0</div>
+                    <div class="text-[9px] text-gray-500 uppercase tracking-wider">Tersedia</div>
+                </div>
+                <div class="bg-[#171a24] p-2 rounded border border-gray-800/50">
+                    <div class="text-amber-400 font-bold text-sm" id="cActive">—</div>
+                    <div class="text-[9px] text-gray-500 uppercase tracking-wider">Live Sesi</div>
+                </div>
+                <div class="bg-[#171a24] p-2 rounded border border-gray-800/50">
+                    <div class="text-red-400 font-bold text-sm" id="cBooked">0</div>
+                    <div class="text-[9px] text-gray-500 uppercase tracking-wider">Booked</div>
+                </div>
+                <div class="bg-[#171a24] p-2 rounded border border-gray-800/50">
+                    <div class="text-gray-600 font-bold text-sm" id="cPassed">0</div>
+                    <div class="text-[9px] text-gray-500 uppercase tracking-wider">Lewat</div>
+                </div>
+            </div>
+
+            <div class="flex gap-4 text-[10px] mb-4 bg-[#171a24] p-2 rounded justify-center border border-gray-800/40">
                 <div class="flex items-center gap-1.5">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
                     <span>Tersedia (Klik)</span>
@@ -172,8 +198,8 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-2 text-[11px]" id="scheduleGrid">
-                </div>
+            <div class="grid grid-cols-3 gap-2 text-[11px]" id="slotsGrid"></div>
+            <div class="slot-info text-center text-[10px] text-amber-500 font-medium italic mt-3" id="slotInfo"></div>
         </div>
 
         <div class="bg-[#12141c] rounded-lg p-5 border border-amber-500/40 shadow-xl shadow-amber-500/5">
@@ -237,7 +263,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] text-amber-500 font-medium tracking-wider uppercase mb-1.5">Tanggal Booking</label>
-                        <input type="date" id="tanggal_pilihan" required onchange="updateWaktuField()"
+                        <input type="date" id="tanggal_pilihan" required onchange="handleTanggalChange()"
                             class="w-full bg-[#171a24] border border-gray-800 rounded px-3 py-2.5 text-gray-400 focus:outline-none focus:border-amber-500 transition">
                     </div>
                 </div>
@@ -262,122 +288,221 @@
     </div>
 
     <script>
-        // ==============================================================
-        //  PENGATURAN STATUS JAM SESI 30 MENIT (09.00 - 21.00 WIB)
-        // ==============================================================
-        // Ubah true menjadi false jika jam tersebut ternyata kosong/tersedia.
+        // Data Jadwal Terstruktur menggunakan properti Start & End untuk kalkulasi waktu lewat
         const dataJadwal = [
-            { jam: "09.00 - 09.30", isBooked: false },
-            { jam: "09.30 - 10.00", isBooked: false },
-            { jam: "10.00 - 10.30", isBooked: false },  // <--- Contoh Terisi
-            { jam: "10.30 - 11.00", isBooked: false },
-            { jam: "11.00 - 11.30", isBooked: false },
-            { jam: "11.30 - 12.00", isBooked: false },
-            { jam: "12.00 - 12.30", isBooked: false },
-            { jam: "12.30 - 13.00", isBooked: false },
-            { jam: "13.00 - 13.30", isBooked: false },  // <--- Contoh Terisi
-            { jam: "13.30 - 14.00", isBooked: false },
-            { jam: "14.00 - 14.30", isBooked: false },
-            { jam: "14.30 - 15.00", isBooked: false },
-            { jam: "15.00 - 15.30", isBooked: false },
-            { jam: "15.30 - 16.00", isBooked: false },
-            { jam: "16.00 - 16.30", isBooked: false },
-            { jam: "16.30 - 17.00", isBooked: false },
-            { jam: "17.00 - 17.30", isBooked: false },  // <--- Contoh Terisi
-            { jam: "17.30 - 18.00", isBooked: false },
-            { jam: "18.00 - 18.30", isBooked: false },
-            { jam: "18.30 - 19.00", isBooked: false },
-            { jam: "19.00 - 19.30", isBooked: false },
-            { jam: "19.30 - 20.00", isBooked: false },
-            { jam: "20.00 - 20.30", isBooked: false },
-            { jam: "20.30 - 21.00", isBooked: false }
+            { jamStart: "09:00", jamEnd: "09:30", isBooked: false },
+            { jamStart: "09:30", jamEnd: "10:00", isBooked: false },
+            { jamStart: "10:00", jamEnd: "10:30", isBooked: false },
+            { jamStart: "10:30", jamEnd: "11:00", isBooked: false },
+            { jamStart: "11:00", jamEnd: "11:30", isBooked: false },
+            { jamStart: "11:30", jamEnd: "12:00", isBooked: false },
+            { jamStart: "12:00", jamEnd: "12:30", isBooked: false },
+            { jamStart: "12:30", jamEnd: "13:00", isBooked: false },
+            { jamStart: "13:00", jamEnd: "13:30", isBooked: false },
+            { jamStart: "13:30", jamEnd: "14:00", isBooked: false },
+            { jamStart: "14:00", jamEnd: "14:30", isBooked: false },
+            { jamStart: "14:30", jamEnd: "15:00", isBooked: false },
+            { jamStart: "15:00", jamEnd: "15:30", isBooked: false },
+            { jamStart: "15:30", jamEnd: "16:00", isBooked: false },
+            { jamStart: "16:00", jamEnd: "16:30", isBooked: false },
+            { jamStart: "16:30", jamEnd: "17:00", isBooked: false },
+            { jamStart: "17:00", jamEnd: "17:30", isBooked: false },
+            { jamStart: "17:30", jamEnd: "18:00", isBooked: false },
+            { jamStart: "18:00", jamEnd: "18:30", isBooked: false },
+            { jamStart: "18:30", jamEnd: "19:00", isBooked: false },
+            { jamStart: "19:00", jamEnd: "19:30", isBooked: false },
+            { jamStart: "19:30", jamEnd: "20:00", isBooked: false },
+            { jamStart: "20:00", jamEnd: "20:30", isBooked: false },
+            { jamStart: "20:30", jamEnd: "21:00", isBooked: false }
         ];
 
         let jamTerpilihGlobal = "";
 
-        // Fungsi me-render list jam ke dalam Grid HTML
-        function renderJadwal() {
-            const grid = document.getElementById('scheduleGrid');
-            grid.innerHTML = "";
+        // Fungsi Engine Pembaruan Jam Real-time & Status Grid
+        function updateSesiDanJam() {
+            const sekarang = new Date();
+            
+            // Format teks jam digital
+            const jamDigital = sekarang.toLocaleTimeString('id-ID', { hour12: false });
+            document.getElementById('clockDisplay').innerText = jamDigital + " WIB";
 
-            dataJadwal.forEach(slot => {
-                const btn = document.createElement('button');
+            // Cek kondisi pemilihan tanggal
+            const inputTanggal = document.getElementById('tanggal_pilihan').value;
+            const formatHariIni = sekarang.toISOString().split('T')[0];
+            const isHariIni = (inputTanggal === formatHariIni);
+
+            // Parsing waktu saat ini ke bentuk desimal
+            const waktuSekarangDesimal = sekarang.getHours() + (sekarang.getMinutes() / 60);
+
+            let countAvail = 0;
+            let countBooked = 0;
+            let countPassed = 0;
+            let sesiAktifTeks = "—";
+
+            const grid = document.getElementById('slotsGrid');
+            const isInitialRender = (grid.children.length === 0);
+
+            dataJadwal.forEach((slot, index) => {
+                const [startH, startM] = slot.jamStart.split(':').map(Number);
+                const [endH, endM] = slot.jamEnd.split(':').map(Number);
+                const waktuStartDesimal = startH + (startM / 60);
+                const waktuEndDesimal = endH + (endM / 60);
+
+                let status = "avail"; 
                 
                 if (slot.isBooked) {
-                    btn.className = "bg-red-950/40 text-red-400 border border-red-900/60 py-2 rounded font-medium cursor-not-allowed opacity-60 text-center flex items-center justify-center gap-1 text-[10px]";
-                    btn.innerHTML = `<i class="fa-solid fa-ban text-[9px]"></i> ${slot.jam}`;
-                    btn.disabled = true;
+                    status = "booked";
+                    countBooked++;
+                } else if (isHariIni && waktuSekarangDesimal >= waktuEndDesimal) {
+                    status = "passed";
+                    countPassed++;
                 } else {
-                    btn.className = "bg-emerald-950/20 hover:bg-emerald-500 hover:text-black border border-emerald-800/40 text-emerald-400 py-2 rounded font-medium transition duration-200 text-center text-[10px]";
-                    btn.innerText = slot.jam;
-                    btn.onclick = () => simpanJamSesi(slot.jam);
+                    countAvail++;
                 }
-                grid.appendChild(btn);
+
+                if (isHariIni && waktuSekarangDesimal >= waktuStartDesimal && waktuSekarangDesimal < waktuEndDesimal) {
+                    sesiAktifTeks = `${slot.jamStart} - ${slot.jamEnd}`;
+                }
+
+                const teksJamSesi = `${slot.jamStart} - ${slot.jamEnd}`;
+
+                if (isInitialRender) {
+                    const btn = document.createElement('button');
+                    btn.type = "button";
+                    btn.innerText = teksJamSesi;
+
+                    if (status === "booked") {
+                        btn.className = "bg-red-950/40 text-red-400 border border-red-900/60 py-2 rounded font-medium cursor-not-allowed opacity-60 text-center text-[10px]";
+                        btn.disabled = true;
+                    } else if (status === "passed") {
+                        btn.className = "bg-gray-900/40 text-gray-600 border border-gray-800/60 py-2 rounded font-medium cursor-not-allowed line-through opacity-40 text-center text-[10px]";
+                        btn.disabled = true;
+                    } else {
+                        // Jika jam yang dipilah sama dengan jam global (misal setelah refresh/render ulang tanggal)
+                        if (jamTerpilihGlobal === teksJamSesi) {
+                            btn.className = "bg-amber-500 text-black border border-amber-600 py-2 rounded font-medium text-center text-[10px] time-slot-btn";
+                        } else {
+                            btn.className = "bg-emerald-950/20 hover:bg-emerald-500 hover:text-black border border-emerald-800/40 text-emerald-400 py-2 rounded font-medium transition duration-200 text-center text-[10px] time-slot-btn";
+                        }
+                        btn.onclick = () => simpanJamSesi(btn, teksJamSesi);
+                    }
+                    grid.appendChild(btn);
+                } else {
+                    const btn = grid.children[index];
+                    if (status === "passed" && !btn.disabled) {
+                        btn.className = "bg-gray-900/40 text-gray-600 border border-gray-800/60 py-2 rounded font-medium cursor-not-allowed line-through opacity-40 text-center text-[10px]";
+                        btn.disabled = true;
+                        btn.onclick = null;
+                        
+                        if (jamTerpilihGlobal === teksJamSesi) {
+                            jamTerpilihGlobal = "";
+                            updateWaktuField();
+                        }
+                    }
+                }
             });
 
-            // Set default minimal tanggal hari ini di input date
-            const hariIni = new Date().toISOString().split('T')[0];
-            document.getElementById('tanggal_pilihan').min = hariIni;
+            document.getElementById('cAvail').innerText = countAvail;
+            document.getElementById('cBooked').innerText = countBooked;
+            document.getElementById('cPassed').innerText = countPassed;
+            document.getElementById('cActive').innerText = sesiAktifTeks;
         }
 
-        // Fungsi mencatat jam saat tombol jam diklik
-        function simpanJamSesi(jamPilihan) {
+        function simpanJamSesi(element, jamPilihan) {
+            document.querySelectorAll('.time-slot-btn').forEach(b => {
+                b.classList.remove('bg-amber-500', 'text-black');
+                b.classList.add('bg-emerald-950/20', 'text-emerald-400');
+            });
+
+            element.classList.remove('bg-emerald-950/20', 'text-emerald-400');
+            element.classList.add('bg-amber-500', 'text-black');
+
             jamTerpilihGlobal = jamPilihan;
             updateWaktuField();
             
-            // Otomatis fokus/scroll ke form pengisian
-            document.getElementById('tanggal_pilihan').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('tanggal_pilihan').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // Fungsi menggabungkan tanggal pilihan + jam sesi ke dalam input text
         function updateWaktuField() {
             const tanggalInput = document.getElementById('tanggal_pilihan').value;
+            const waktuField = document.getElementById('waktu_text');
             
             if (!jamTerpilihGlobal) {
-                document.getElementById('waktu_text').value = "Silahkan klik tombol jam sesi di atas...";
+                waktuField.value = "";
+                waktuField.placeholder = "Silahkan klik tombol jam sesi di atas...";
+                document.getElementById('slotInfo').innerText = "";
                 return;
             }
 
             if (!tanggalInput) {
-                document.getElementById('waktu_text').value = `Sesi ${jamTerpilihGlobal} WIB (Silahkan pilih tanggal di bawah)`;
+                waktuField.value = "";
+                waktuField.placeholder = `Sesi ${jamTerpilihGlobal} WIB (Silahkan tentukan Tanggal Booking)`;
+                document.getElementById('slotInfo').innerText = `Sesi dipilih: ${jamTerpilihGlobal} WIB (Tanggal Belum Dipilih)`;
                 return;
             }
 
-            // Ubah format tanggal agar rapi dibaca manusia
+            const parts = tanggalInput.split('-');
+            const localDate = new Date(parts[0], parts[1] - 1, parts[2]);
             const opsiTgl = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const tanggalFormatted = new Date(tanggalInput).toLocaleDateString('id-ID', opsiTgl);
+            const tanggalFormatted = localDate.toLocaleDateString('id-ID', opsiTgl);
             
-            document.getElementById('waktu_text').value = `${tanggalFormatted} [Sesi: ${jamTerpilihGlobal} WIB]`;
+            waktuField.value = `${tanggalFormatted} [Sesi: ${jamTerpilihGlobal} WIB]`;
+            document.getElementById('slotInfo').innerText = `Sesi Diaktifkan: Sesi ${jamTerpilihGlobal} WIB`;
         }
 
-        // Fungsi mencatat paket terpilih
+        function handleTanggalChange() {
+            document.getElementById('slotsGrid').innerHTML = ""; // Reset grid untuk kalkulasi ulang
+            updateSesiDanJam();
+            updateWaktuField();
+        }
+
         function setPaket(namaPaket) {
             document.getElementById('paket').value = namaPaket;
-            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // Handle submit data ke WhatsApp
+        // Setup Inisialisasi Batas Tanggal Minimal Hari Ini
+        function initTanggal() {
+            const localToday = new Date();
+            const year = localToday.getFullYear();
+            const month = String(localToday.getMonth() + 1).padStart(2, '0');
+            const day = String(localToday.getDate()).padStart(2, '0');
+            document.getElementById('tanggal_pilihan').min = `${year}-${month}-${day}`;
+        }
+
+        // Submit to WhatsApp Handler
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const nomorWA = "6285122110230"; // Ganti dengan nomor WhatsApp Studio Anda
-            const nama = document.getElementById('nama').value;
+            const nomorWA = "6285122110230"; 
+            const nama = document.getElementById('nama').value.trim();
             const paket = document.getElementById('paket').value;
             const kapasitas = document.getElementById('kapasitas').value;
             const waktuFinal = document.getElementById('waktu_text').value;
 
-            const textPesan = `Halo Setara Studio, saya ingin melakukan booking:%0A%0A` +
-                              `• *Nama Lengkap :* ${nama}%0A` +
-                              `• *Paket Foto :* ${paket}%0A` +
-                              `• *Jumlah Orang :* ${kapasitas} orang%0A` +
-                              `• *Waktu Sesi :* ${waktuFinal}%0A%0A` +
-                              `Mohon diproses untuk jadwal tersebut. Terima kasih!`;
+            if (!waktuFinal) {
+                alert("Harap pilih tanggal dan klik salah satu Sesi Jam Kunjungan yang tersedia terlebih dahulu!");
+                document.getElementById('sectionJam').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const textPesan = encodeURIComponent(
+                `Halo Setara Studio, saya ingin melakukan booking:\n\n` +
+                `• *Nama Lengkap :* ${nama}\n` +
+                `• *Paket Foto :* ${paket}\n` +
+                `• *Jumlah Orang :* ${kapasitas} orang\n` +
+                `• *Waktu Sesi :* ${waktuFinal}\n\n` +
+                `Mohon diproses untuk jadwal tersebut. Terima kasih!`
+            );
 
             window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${textPesan}`, '_blank');
         });
 
-        // Jalankan fungsi saat halaman load pertama kali
-        window.onload = renderJadwal;
+        window.onload = () => {
+            initTanggal();
+            updateSesiDanJam();
+            setInterval(updateSesiDanJam, 1000); // Sinkronisasi jam digital & status coret tiap 1 detik
+        };
     </script>
 </body>
 </html>
