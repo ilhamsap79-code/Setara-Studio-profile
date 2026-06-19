@@ -1,6 +1,38 @@
 /* =========================================
    CSS VARIABLES & RESET
    ========================================= */
+   :root {
+  /* Warna Default (Light Mode) */
+  --bg-color: #f7f2ea;
+  --text-color: #23201d;
+  --header-bg: rgba(255, 255, 255, 0.9);
+  /* ... tambahkan warna lain sesuai kebutuhan ... */
+}
+
+/* Tambahkan ini untuk Dark Mode */
+body.dark-mode {
+  --bg-color: #080808;
+  --text-color: #f7f2ea;
+  --header-bg: rgba(8, 8, 8, 0.9);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Styling untuk tombol toggle */
+#theme-toggle {
+  cursor: pointer;
+  padding: 8px 12px;
+  background: var(--gold);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+}
+
 :root {
   --bg-dark: #0a0a0a;
   --bg-card: #141414;

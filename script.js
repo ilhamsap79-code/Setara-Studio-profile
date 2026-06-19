@@ -24,3 +24,24 @@ const revealObserver = new IntersectionObserver((entries) => {
 });
 
 reveals.forEach((element) => revealObserver.observe(element));
+
+const toggleButton = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Cek apakah user sudah pernah memilih mode gelap sebelumnya
+if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-mode');
+    toggleButton.innerText = '☀️ Mode Terang';
+}
+
+toggleButton.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        toggleButton.innerText = '☀️ Mode Terang';
+    } else {
+        localStorage.setItem('theme', 'light');
+        toggleButton.innerText = '🌙 Mode Gelap';
+    }
+});
